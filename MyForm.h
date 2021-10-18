@@ -342,7 +342,7 @@ namespace Proyecto1FranciscoPuga1183819 {
 			for (int h = 0; h < 100; h++)
 			{
 
-				if (pila1->songTop(pila1, h, 0) != 46)//. = 46, sí es un punto, no se imprime
+				if (pila1->songTop(pila1, h, 0) != 46)
 				{
 					labRepro->Text += ConvAsc(Convert::ToInt32(pila1->songTop(pila1, h, 0))); 
 				}
