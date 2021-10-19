@@ -1,13 +1,13 @@
 #include "Cole.h"
 
-Cole* Cole::AddTop(Cole* cola, char song1[100], char artist1[100]) {
+Cole* Cole::AddTop(Cole* cola, char song1[50], char artist1[50]) {
 	Cole* aux = new Cole();
 
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 50; i++) {
 		aux->artist[i] = artist1[i];
 	}
 
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 50; i++) {
 		aux->song[i] = song1[i];
 	}
 

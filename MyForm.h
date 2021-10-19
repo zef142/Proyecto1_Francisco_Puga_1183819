@@ -66,6 +66,11 @@ namespace Proyecto1FranciscoPuga1183819 {
 	private: System::Windows::Forms::Label^ lblIndice;
 	private: System::Windows::Forms::TextBox^ tbxCola;
 	private: System::Windows::Forms::Button^ btnCola;
+	private: System::Windows::Forms::Button^ btnExportar;
+	private: System::Windows::Forms::SaveFileDialog^ SaveFile;
+	private: System::Windows::Forms::Button^ btnOcan;
+	private: System::Windows::Forms::Button^ btnOart;
+	private: System::Windows::Forms::Button^ btnDelC;
 
 	private:
 		/// <summary>
@@ -98,6 +103,11 @@ namespace Proyecto1FranciscoPuga1183819 {
 			this->lblIndice = (gcnew System::Windows::Forms::Label());
 			this->tbxCola = (gcnew System::Windows::Forms::TextBox());
 			this->btnCola = (gcnew System::Windows::Forms::Button());
+			this->btnExportar = (gcnew System::Windows::Forms::Button());
+			this->SaveFile = (gcnew System::Windows::Forms::SaveFileDialog());
+			this->btnOcan = (gcnew System::Windows::Forms::Button());
+			this->btnOart = (gcnew System::Windows::Forms::Button());
+			this->btnDelC = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// rtbPlaylist
@@ -231,6 +241,7 @@ namespace Proyecto1FranciscoPuga1183819 {
 			this->cbxActions->Size = System::Drawing::Size(121, 21);
 			this->cbxActions->TabIndex = 13;
 			this->cbxActions->Visible = false;
+			this->cbxActions->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::cbxActions_SelectedIndexChanged);
 			// 
 			// labAct
 			// 
@@ -292,11 +303,12 @@ namespace Proyecto1FranciscoPuga1183819 {
 			this->tbxCola->Text = L" ";
 			this->tbxCola->Visible = false;
 			this->tbxCola->WordWrap = false;
+			this->tbxCola->TextChanged += gcnew System::EventHandler(this, &MyForm::tbxCola_TextChanged);
 			// 
 			// btnCola
 			// 
 			this->btnCola->BackColor = System::Drawing::Color::LimeGreen;
-			this->btnCola->Location = System::Drawing::Point(932, 591);
+			this->btnCola->Location = System::Drawing::Point(847, 632);
 			this->btnCola->Name = L"btnCola";
 			this->btnCola->Size = System::Drawing::Size(133, 23);
 			this->btnCola->TabIndex = 19;
@@ -305,6 +317,59 @@ namespace Proyecto1FranciscoPuga1183819 {
 			this->btnCola->Visible = false;
 			this->btnCola->Click += gcnew System::EventHandler(this, &MyForm::btnCola_Click);
 			// 
+			// btnExportar
+			// 
+			this->btnExportar->BackColor = System::Drawing::Color::LimeGreen;
+			this->btnExportar->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->btnExportar->Location = System::Drawing::Point(848, 632);
+			this->btnExportar->Name = L"btnExportar";
+			this->btnExportar->Size = System::Drawing::Size(131, 23);
+			this->btnExportar->TabIndex = 20;
+			this->btnExportar->Text = L"Exportar playlist";
+			this->btnExportar->UseVisualStyleBackColor = false;
+			this->btnExportar->Visible = false;
+			this->btnExportar->Click += gcnew System::EventHandler(this, &MyForm::btnExportar_Click);
+			// 
+			// SaveFile
+			// 
+			this->SaveFile->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &MyForm::SaveFile_FileOk);
+			// 
+			// btnOcan
+			// 
+			this->btnOcan->BackColor = System::Drawing::Color::LimeGreen;
+			this->btnOcan->Location = System::Drawing::Point(849, 633);
+			this->btnOcan->Name = L"btnOcan";
+			this->btnOcan->Size = System::Drawing::Size(131, 23);
+			this->btnOcan->TabIndex = 21;
+			this->btnOcan->Text = L"Ordenar por Canción";
+			this->btnOcan->UseVisualStyleBackColor = false;
+			this->btnOcan->Visible = false;
+			this->btnOcan->Click += gcnew System::EventHandler(this, &MyForm::btnOcan_Click);
+			// 
+			// btnOart
+			// 
+			this->btnOart->BackColor = System::Drawing::Color::LimeGreen;
+			this->btnOart->Location = System::Drawing::Point(849, 632);
+			this->btnOart->Name = L"btnOart";
+			this->btnOart->Size = System::Drawing::Size(131, 23);
+			this->btnOart->TabIndex = 22;
+			this->btnOart->Text = L"Ordenar por Artista";
+			this->btnOart->UseVisualStyleBackColor = false;
+			this->btnOart->Visible = false;
+			this->btnOart->Click += gcnew System::EventHandler(this, &MyForm::btnOart_Click);
+			// 
+			// btnDelC
+			// 
+			this->btnDelC->BackColor = System::Drawing::Color::LimeGreen;
+			this->btnDelC->Location = System::Drawing::Point(849, 633);
+			this->btnDelC->Name = L"btnDelC";
+			this->btnDelC->Size = System::Drawing::Size(131, 23);
+			this->btnDelC->TabIndex = 23;
+			this->btnDelC->Text = L"Eliminar de la cola";
+			this->btnDelC->UseVisualStyleBackColor = false;
+			this->btnDelC->Visible = false;
+			this->btnDelC->Click += gcnew System::EventHandler(this, &MyForm::btnDelC_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -312,6 +377,10 @@ namespace Proyecto1FranciscoPuga1183819 {
 			this->BackColor = System::Drawing::Color::Green;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(1201, 734);
+			this->Controls->Add(this->btnDelC);
+			this->Controls->Add(this->btnOart);
+			this->Controls->Add(this->btnOcan);
+			this->Controls->Add(this->btnExportar);
 			this->Controls->Add(this->btnCola);
 			this->Controls->Add(this->lblIndice);
 			this->Controls->Add(this->tbxCola);
@@ -339,35 +408,25 @@ namespace Proyecto1FranciscoPuga1183819 {
 		void StatusPile() {
 			rtbPlaylist->Text = " ";
 			labRepro->Text = "Reproduciendo: ";
-			for (int h = 0; h < 100; h++)
-			{
+			for (int h = 0; h < 50; h++) {
 
-				if (pila1->songTop(pila1, h, 0) != 46)
-				{
+				if (pila1->songTop(pila1, h, 0) != 46) {
 					labRepro->Text += ConvAsc(Convert::ToInt32(pila1->songTop(pila1, h, 0))); 
 				}
 
-
-
-
 			}
-			for (int i = 0; i < 100; i++)
-			{
-				if (pila1->artistTop(pila1, i, 0) != 46)
-				{
+			for (int i = 0; i < 50; i++) {
+				if (pila1->artistTop(pila1, i, 0) != 46) {
 					labRepro->Text += ConvAsc(Convert::ToInt32(pila1->artistTop(pila1, i, 0)));
 				}
 
 			}
 
-			for (int j = 0; j < size; j++)
-			{
+			for (int j = 0; j < size; j++) {
 				rtbPlaylist->Text += (j + 1) + "-";
-				for (int h = 0; h < 100; h++)
-				{
+				for (int h = 0; h < 50; h++) {
 
-					if (pila1->songTop(pila1, h, j) != 46)
-					{
+					if (pila1->songTop(pila1, h, j) != 46) {
 						rtbPlaylist->Text += ConvAsc(Convert::ToInt32(pila1->songTop(pila1, h, j)));
 					}
 
@@ -375,10 +434,8 @@ namespace Proyecto1FranciscoPuga1183819 {
 
 
 				}
-				for (int i = 0; i < 100; i++)
-				{
-					if (pila1->artistTop(pila1, i, j) != 46)
-					{
+				for (int i = 0; i < 50; i++) {
+					if (pila1->artistTop(pila1, i, j) != 46) {
 						rtbPlaylist->Text += ConvAsc(Convert::ToInt32(pila1->artistTop(pila1, i, j)));
 					}
 
@@ -387,13 +444,11 @@ namespace Proyecto1FranciscoPuga1183819 {
 			}
 	    }
 
-		void ApplyCol()
-		{
-			char song[100];
-			char artist[100];
+		void ApplyCol() {
+			char song[50];
+			char artist[50];
 
-			for (int i = 0; i < 100; i++)
-			{
+			for (int i = 0; i < 50; i++) {
 				song[i] = Convert::ToChar(pila1->songTop(pila1, i, 0));
 				artist[i] = Convert::ToChar(pila1->artistTop(pila1, i, 0));
 			}
@@ -402,14 +457,11 @@ namespace Proyecto1FranciscoPuga1183819 {
 
 		}
 
-		void ApplyPila()
-		{
-			char song[100];
-			char artist[100];
-			for (int j = 0; j < sizecola; j++)
-			{
-				for (int i = 0; i < 100; i++)
-				{
+		void ApplyPila() {
+			char song[50];
+			char artist[50];
+			for (int j = 0; j < sizecola; j++) {
+				for (int i = 0; i < 50; i++) {
 					song[i] = Convert::ToChar(cola1->songTop(cola1, i, 0));
 					artist[i] = Convert::ToChar(cola1->artistTop(cola1, i, 0));
 				}
@@ -423,27 +475,22 @@ namespace Proyecto1FranciscoPuga1183819 {
 
 		}
 
-		void StatusCola1()
-		{
+		void StatusCola1() {
 			rtbPlaylist->Text += "\n\n\n***Canciones ya reproducidas***\n ";
 
-			for (int j = 0; j < sizecola; j++)
-			{
+			for (int j = 0; j < sizecola; j++) {
 				rtbPlaylist->Text += (j + 1) + "-";
-				for (int h = 0; h < 100; h++)
+				for (int h = 0; h < 50; h++)
 				{
 
-					if (cola1->songTop(cola1, h, j) != 46)
-					{
+					if (cola1->songTop(cola1, h, j) != 46) {
 						rtbPlaylist->Text += ConvAsc(Convert::ToInt32(cola1->songTop(cola1, h, j)));
 					}
 
 
 				}
-				for (int i = 0; i < 100; i++)
-				{
-					if (cola1->artistTop(cola1, i, j) != 46)
-					{
+				for (int i = 0; i < 50; i++) {
+					if (cola1->artistTop(cola1, i, j) != 46) {
 						rtbPlaylist->Text += ConvAsc(Convert::ToInt32(cola1->artistTop(cola1, i, j)));
 					}
 
@@ -452,27 +499,21 @@ namespace Proyecto1FranciscoPuga1183819 {
 			}
 		}
 
-		void StatusCola2()
-		{
+		void StatusCola2() {
 			rtbCola->Text = " ";
 
-			for (int j = 0; j < sizecola1; j++)
-			{
+			for (int j = 0; j < sizecola1; j++) {
 				rtbCola->Text += (j + 1) + "-";
-				for (int h = 0; h < 100; h++)
-				{
+				for (int h = 0; h < 50; h++) {
 
-					if (cola2->songTop(cola2, h, j) != 46)
-					{
+					if (cola2->songTop(cola2, h, j) != 46) {
 						rtbCola->Text += ConvAsc(Convert::ToInt32(cola2->songTop(cola2, h, j))); 
 					}
 
 
 				}
-				for (int i = 0; i < 100; i++)
-				{
-					if (cola2->artistTop(cola2, i, j) != 46)
-					{
+				for (int i = 0; i < 50; i++) {
+					if (cola2->artistTop(cola2, i, j) != 46) {
 						rtbCola->Text += ConvAsc(Convert::ToInt32(cola2->artistTop(cola2, i, j)));
 					}
 
@@ -496,13 +537,13 @@ namespace Proyecto1FranciscoPuga1183819 {
 
 				array<String^>^ read = lines[i]->Split(',');
 				size += read->Length;
-				char wordsong[100];
-				char artistn[100];
+				char wordsong[50];
+				char artistn[50];
 
 				for (int j = 0; j < read->Length; j++) {
-					for (int y = 0; y < 100; y++) {
-						wordsong[100] = ',';
-						artistn[100] = ',';
+					for (int y = 0; y < 50; y++) {
+						wordsong[50] = ',';
+						artistn[50] = ',';
 					}
 
 					int aux = 0;
@@ -551,7 +592,6 @@ namespace Proyecto1FranciscoPuga1183819 {
 			label3->Show();
 			label2->Show();
 			label1->Show();
-
 
 		}
 		else {
@@ -959,7 +999,7 @@ private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^
 private: System::Void btnNext_Click(System::Object^ sender, System::EventArgs^ e) {
 	labRepro->Text = "Reproduciendo: ";
 	if (sizecola1 != 0){
-		for (int h = 0; h < 100; h++) {
+		for (int h = 0; h < 50; h++) {
 
 			if (cola2->songTop(cola2, h, 0) != 46) {
 				labRepro->Text += ConvAsc(Convert::ToInt32(cola2->songTop(cola2, h, 0))); 
@@ -967,7 +1007,7 @@ private: System::Void btnNext_Click(System::Object^ sender, System::EventArgs^ e
 
 
 		}
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 50; i++) {
 			if (cola2->artistTop(cola2, i, 0) != 46){
 				labRepro->Text += ConvAsc(Convert::ToInt32(cola2->artistTop(cola2, i, 0)));
 			}
@@ -1002,8 +1042,8 @@ private: System::Void btnNext_Click(System::Object^ sender, System::EventArgs^ e
 	}
 }
 private: System::Void btnCola_Click(System::Object^ sender, System::EventArgs^ e) {
-	char song[100];
-	char artist[100];
+	char song[50];
+	char artist[50];
 	int indice;
 
 	indice = Convert::ToInt32(tbxCola->Text);
@@ -1014,7 +1054,7 @@ private: System::Void btnCola_Click(System::Object^ sender, System::EventArgs^ e
 		MessageBox::Show("El indice ingresado no se encuentra.");
 	}
 	else {
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 50; i++) {
 			song[i] = pila1->songTop(pila1, i, indice - 1);
 			artist[i] = pila1->artistTop(pila1, i, indice - 1);
 		}
@@ -1022,6 +1062,200 @@ private: System::Void btnCola_Click(System::Object^ sender, System::EventArgs^ e
 		cola2 = cola2->AddTop(cola2, song, artist);
 		sizecola1++;
 		StatusCola2();
+	}
+}
+private: System::Void tbxCola_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
+	if (!Char::IsDigit(e->KeyChar) && e->KeyChar != 0x08) {
+		e->Handled = true;
+	}
+}
+private: System::Void tbxCola_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void cbxActions_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (cbxActions->Text == "Cambiar de cancion") {
+		btnNext->Show();
+		btnCola->Hide();
+		btnExportar->Hide();
+		tbxCola->Hide();
+		btnOcan->Hide();
+		btnOart->Hide();
+		lblIndice->Hide();
+		tbxCola->Hide();
+		btnDelC->Hide();
+
+	}
+	else if (cbxActions->Text == "Agregar a cola") {
+		btnNext->Hide();
+		btnCola->Show();
+		btnExportar->Hide();
+		tbxCola->Show();
+		btnOcan->Hide();
+		btnOart->Hide();
+		lblIndice->Show();
+		tbxCola->Show();
+		btnDelC->Hide();
+	}
+	else if (cbxActions->Text == "Exportar") {
+		btnNext->Hide();
+		btnCola->Hide();
+		btnExportar->Show();
+		tbxCola->Hide();
+		btnOcan->Hide();
+		btnOart->Hide();
+		lblIndice->Hide();
+		tbxCola->Hide();
+		btnDelC->Hide();
+
+	}
+	else if (cbxActions->Text == "Ordenar por Canción") {
+		btnNext->Hide();
+		btnCola->Hide();
+		btnExportar->Hide();
+		tbxCola->Hide();
+		btnOcan->Show();
+		btnOart->Hide();
+		lblIndice->Hide();
+		tbxCola->Hide();
+		btnDelC->Hide();
+
+	}
+	else if (cbxActions->Text == "Ordenar por Artista") {
+		btnNext->Hide();
+		btnCola->Hide();
+		btnExportar->Hide();
+		tbxCola->Hide();
+		btnOcan->Hide();
+		btnOart->Show();
+		lblIndice->Hide();
+		tbxCola->Hide();
+		btnDelC->Hide();
+
+	}
+	else if (cbxActions->Text == "Eliminar de la cola") {
+		btnNext->Hide();
+		btnCola->Hide();
+		btnExportar->Hide();
+		tbxCola->Hide();
+		btnOcan->Hide();
+		btnOart->Hide();
+		lblIndice->Show();
+		tbxCola->Show();
+		btnDelC->Show();
+
+	}
+}
+private: System::Void btnExportar_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	SaveFile->Filter = "Archivos separados por coma (csv) | *.csv";
+	String^ Textoo = " ";
+	if (SaveFile->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+
+		if (size != 0) {
+
+
+			for (int j = 0; j < size; j++) {
+				for (int h = 0; h < 50; h++) {
+
+					if (pila1->songTop(pila1, h, j) != 46) {
+						Textoo += ConvAsc(Convert::ToInt32(pila1->songTop(pila1, h, j)));
+					}
+
+				}
+				for (int i = 0; i < 50; i++) {
+					if (pila1->artistTop(pila1, i, j) != 46) {
+						Textoo += ConvAsc(Convert::ToInt32(pila1->artistTop(pila1, i, j)));
+					}
+				}
+				Textoo += ",";
+			}
+
+			File::WriteAllText(SaveFile->FileName, Textoo);
+
+			MessageBox::Show("Playlist guardada correctamente.");
+		}
+		else {
+			MessageBox::Show("Playlist seleccionada esta vacia.");
+		}
+	}
+	else {
+		MessageBox::Show("Documento no seleccionado");
+	}
+
+}
+private: System::Void SaveFile_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
+	SaveFile->Filter = "Archivos separados por coma (csv) | *.csv";
+}
+private: System::Void btnOcan_Click(System::Object^ sender, System::EventArgs^ e) {
+	char song[50];
+	char artist[50];
+	char song2[50];
+	char artist2[50];
+
+	for (int i = 0; i < (size - 1); i++) {
+		for (int j = 0; j < (size - i - 1); j++) {
+			if (pila1->songTop(pila1, 1, j) > pila1->songTop(pila1, 1, j + 1)) {
+				for (int h = 0; h < 50; h++) {
+					song[h] = pila1->songTop(pila1, h, j);
+					artist[h] = pila1->artistTop(pila1, h, j);
+
+					song2[h] = pila1->songTop(pila1, h, (j + 1));
+					artist2[h] = pila1->artistTop(pila1, h, (j + 1));
+				}
+
+
+				pila1->ExchangePila(pila1, j, song2, artist2);
+				pila1->ExchangePila(pila1, (j + 1), song, artist);//Se intercambian los valores de la pila
+
+
+			}
+		}
+
+	}
+	StatusPile();
+	StatusCola1();
+}
+private: System::Void btnOart_Click(System::Object^ sender, System::EventArgs^ e) {
+	char song[50];
+	char artist[50];
+	char song2[50];
+	char artist2[50];
+
+	for (int i = 0; i < (size - 1); i++) {
+		for (int j = 0; j < (size - i - 1); j++) {
+			if (pila1->artistTop(pila1, 1, j) < pila1->artistTop(pila1, 1, j + 1)) {
+				for (int h = 0; h < 50; h++) {
+					song[h] = pila1->songTop(pila1, h, j);
+					artist[h] = pila1->artistTop(pila1, h, j);
+
+					song2[h] = pila1->songTop(pila1, h, (j + 1));
+					artist2[h] = pila1->artistTop(pila1, h, (j + 1));
+				}
+
+
+				pila1->ExchangePila(pila1, j, song2, artist2);
+				pila1->ExchangePila(pila1, (j + 1), song, artist);
+
+
+			}
+		}
+
+	}
+	StatusPile();
+	StatusCola1();
+}
+private: System::Void btnDelC_Click(System::Object^ sender, System::EventArgs^ e) {
+	int indice;
+
+	indice = Convert::ToInt16(tbxCola->Text);
+
+	if (sizecola1 >= indice) {
+		cola2->Erase(cola2, indice - 1);
+		sizecola1--;
+		StatusCola2();
+
+	}
+	else {
+		MessageBox::Show("El indice ingresado no se encuentra.");
 	}
 }
 };

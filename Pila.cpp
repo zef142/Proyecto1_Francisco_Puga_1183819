@@ -1,10 +1,10 @@
 #include "Pila.h"
 
-Pila* Pila::Apilar(Pila* pila, char song1[100], char artist1[100]) {
+Pila* Pila::Apilar(Pila* pila, char song1[50], char artist1[50]) {
 	
 	Pila* aux = new Pila();
 
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 50; i++) {
 
 		if (artist[i] < 0) {
 			break;
@@ -14,7 +14,7 @@ Pila* Pila::Apilar(Pila* pila, char song1[100], char artist1[100]) {
 
 	}
 
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 50; i++) {
 
 		if (song[i] < 0) {
 			break;
@@ -38,7 +38,7 @@ Pila* Pila::Desapilar(Pila* pila) {
 	return pi;
 }
 
-Pila* Pila::ExchangePila(Pila* pila, int value, char song1[100], char artist1[100]) {
+Pila* Pila::ExchangePila(Pila* pila, int value, char song1[50], char artist1[50]) {
 	Pila* temp = new Pila();
 	temp = pila;
 
@@ -46,7 +46,7 @@ Pila* Pila::ExchangePila(Pila* pila, int value, char song1[100], char artist1[10
 		temp = temp->next;
 	}
 
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 50; i++) {
 		temp->artist[i] = artist1[i];
 		temp->song[i] = song1[i];
 	}
